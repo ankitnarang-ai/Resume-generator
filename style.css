@@ -1,0 +1,29 @@
+body {
+    background-image: url(bg.jpg);
+}
+#cv-form {
+    display: block;
+}
+#cv-template {
+    display: none;
+}
+.heading1 {
+    color: black;
+}
+.myimg {
+    border: 1px solid black;
+    border-radius: 50%;
+    width: 200px;
+}
+.card .background {
+    background-color: aqua;
+}
+.container .background {
+    background-color: aqua;
+}
+h3 {
+    color: red;
+}
+#buttonpdf:hover {
+    background-color: rgb(0, 213, 213);
+}
