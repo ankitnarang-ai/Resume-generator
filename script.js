@@ -1,30 +1,67 @@
+// Auth functions
+function toggleForms() {
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none';
+    signupForm.style.display = signupForm.style.display === 'none' ? 'block' : 'none';
+}
+
+function signup() {
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    
+    if (users.some(user => user.email === email)) {
+        alert('User already exists!');
+        return;
+    }
+
+    users.push({ email, password });
+    localStorage.setItem('users', JSON.stringify(users));
+    alert('Signup successful! Please login.');
+    toggleForms();
+}
+
+function login() {
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    
+    const user = users.find(u => u.email === email && u.password === password);
+    
+    if (user) {
+        document.getElementById('auth-container').style.display = 'none';
+        document.getElementById('cv-form').style.display = 'block';
+    } else {
+        alert('Invalid credentials!');
+    }
+}
+
+// CV generation functions
 function addNewWEField() {
     let newNode = document.createElement('textarea');
-    newNode.classList.add('form-control');
     newNode.classList.add('weField');
-    newNode.classList.add('mt-2');
+    newNode.setAttribute('rows', 3);
     newNode.setAttribute('placeholder', 'Enter here');
-    newNode.setAttribute("rows", 3);
+
     let weOb = document.getElementById("we");
-
-    let weAddButtonOB = document.getElementById("WeAddButton");
-
-    weOb.insertBefore(newNode, weAddButtonOB);
+    let weAddButtonOb = document.querySelector("#we .buttonContainer");
+    
+    weOb.insertBefore(newNode, weAddButtonOb);
 }
+
 function addNewAQField() {
     let newNode = document.createElement('textarea');
-    newNode.classList.add('form-control');
     newNode.classList.add('eqField');
-    newNode.classList.add('mt-2');
+    newNode.setAttribute('rows', 3);
     newNode.setAttribute('placeholder', 'Enter here');
-    newNode.setAttribute("rows", 3);
+
     let aqOb = document.getElementById("aq");
-
-    let eqAddButtonOB = document.getElementById("eqAddButton");
-
-    aqOb.insertBefore(newNode, eqAddButtonOB);
+    let aqAddButtonOb = document.querySelector("#aq .buttonContainer");
+    
+    aqOb.insertBefore(newNode, aqAddButtonOb);
 }
-//generating cv 
+
 function generateCV() {
     let nameField = document.getElementById('nameField').value;
     let nameT1 = document.getElementById('nameT1');
@@ -32,33 +69,24 @@ function generateCV() {
 
     document.getElementById("nameT2").innerHTML = nameField;
 
-    // contact
     document.getElementById("contactT").innerHTML = document.getElementById('contactField').value;
-
-    //address
     document.getElementById('addressT').innerHTML = document.getElementById('addressField').value;
-
-    //facebook
     document.getElementById('fbT').innerHTML = document.getElementById('fbField').value;
-    //instagram
     document.getElementById('instaT').innerHTML = document.getElementById('instaField').value;
-    //linkedin
     document.getElementById('linkedT').innerHTML = document.getElementById('linkedField').value;
-    //objective
     document.getElementById('objectiveT').innerHTML = document.getElementById('objectiveField').value;
 
-    //workexperience
     let wes = document.getElementsByClassName('weField');
     let str = "";
     for (let e of wes) {
-        str = str + `<li>  ${e.value}  </li>`;
+        str = str + `<li>${e.value}</li>`;
     }
     document.getElementById('weT').innerHTML = str;
-    // Academic qualification
+
     let aqs = document.getElementsByClassName('eqField');
     let str1 = "";
     for (let e of aqs) {
-        str1 = str1 + `<li>  ${e.value}  </li>`;
+        str1 = str1 + `<li>${e.value}</li>`;
     }
     document.getElementById('aqT').innerHTML = str1;
 
@@ -66,7 +94,6 @@ function generateCV() {
     document.getElementById('cv-template').style.display = 'block';
 }
 
-// Print CV
 function printCV() {
     window.print();
 }
